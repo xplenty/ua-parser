@@ -23,11 +23,15 @@ public class PigTest extends TestCase {
         assertEquals("1",               (new ua_parser.pig.os.Minor()).exec(tuple));
         assertEquals("3",               (new ua_parser.pig.os.Patch()).exec(tuple));
         assertEquals(null,              (new ua_parser.pig.os.PatchMinor()).exec(tuple));
+        assertEquals("iOS 5.1.3",       (new ua_parser.pig.os.FullName()).exec(tuple));
+        assertEquals("5.1.3",           (new ua_parser.pig.os.Version()).exec(tuple));
 
         assertEquals("Mobile Safari",   (new ua_parser.pig.useragent.Family()).exec(tuple));
         assertEquals("5",               (new ua_parser.pig.useragent.Major()).exec(tuple));
         assertEquals("1",               (new ua_parser.pig.useragent.Minor()).exec(tuple));
         assertEquals(null,              (new ua_parser.pig.useragent.Patch()).exec(tuple));
+        assertEquals("Mobile Safari 5.1",              (new ua_parser.pig.useragent.FullName()).exec(tuple));
+        assertEquals("5.1",              (new ua_parser.pig.useragent.Version()).exec(tuple));
 
         // Run the same set twice
         assertEquals("iPhone",          (new ua_parser.pig.device.Family()).exec(tuple));
@@ -37,11 +41,15 @@ public class PigTest extends TestCase {
         assertEquals("1",               (new ua_parser.pig.os.Minor()).exec(tuple));
         assertEquals("3",               (new ua_parser.pig.os.Patch()).exec(tuple));
         assertEquals(null,              (new ua_parser.pig.os.PatchMinor()).exec(tuple));
+        assertEquals("iOS 5.1.3",       (new ua_parser.pig.os.FullName()).exec(tuple));
+        assertEquals("5.1.3",           (new ua_parser.pig.os.Version()).exec(tuple));
 
         assertEquals("Mobile Safari",   (new ua_parser.pig.useragent.Family()).exec(tuple));
         assertEquals("5",               (new ua_parser.pig.useragent.Major()).exec(tuple));
         assertEquals("1",               (new ua_parser.pig.useragent.Minor()).exec(tuple));
         assertEquals(null,              (new ua_parser.pig.useragent.Patch()).exec(tuple));
+        assertEquals("Mobile Safari 5.1",              (new ua_parser.pig.useragent.FullName()).exec(tuple));
+        assertEquals("5.1",              (new ua_parser.pig.useragent.Version()).exec(tuple));
     }
 
     @Test
@@ -54,11 +62,16 @@ public class PigTest extends TestCase {
         assertEquals(null, (new ua_parser.pig.os.Minor()).exec(null));
         assertEquals(null, (new ua_parser.pig.os.Patch()).exec(null));
         assertEquals(null, (new ua_parser.pig.os.PatchMinor()).exec(null));
+        assertEquals(null, (new ua_parser.pig.os.FullName()).exec(null));
+        assertEquals(null, (new ua_parser.pig.os.Version()).exec(null));
+
 
         assertEquals(null, (new ua_parser.pig.useragent.Family()).exec(null));
         assertEquals(null, (new ua_parser.pig.useragent.Major()).exec(null));
         assertEquals(null, (new ua_parser.pig.useragent.Minor()).exec(null));
         assertEquals(null, (new ua_parser.pig.useragent.Patch()).exec(null));
+        assertEquals(null, (new ua_parser.pig.useragent.FullName()).exec(null));
+        assertEquals(null, (new ua_parser.pig.useragent.Version()).exec(null));
 
     }
 
