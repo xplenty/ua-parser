@@ -17,6 +17,7 @@ public class PigTest extends TestCase {
                 + "Version/5.1 Mobile/9B179 Safari/7534.48.3");
 
         assertEquals("iPhone",          (new ua_parser.pig.device.Family()).exec(tuple));
+        assertEquals("Mobile",          (new ua_parser.pig.platform.Family()).exec(tuple));
 
         assertEquals("iOS",             (new ua_parser.pig.os.Family()).exec(tuple));
         assertEquals("5",               (new ua_parser.pig.os.Major()).exec(tuple));
@@ -35,6 +36,7 @@ public class PigTest extends TestCase {
 
         // Run the same set twice
         assertEquals("iPhone",          (new ua_parser.pig.device.Family()).exec(tuple));
+        assertEquals("Mobile",          (new ua_parser.pig.platform.Family()).exec(tuple));
 
         assertEquals("iOS",             (new ua_parser.pig.os.Family()).exec(tuple));
         assertEquals("5",               (new ua_parser.pig.os.Major()).exec(tuple));
@@ -56,6 +58,7 @@ public class PigTest extends TestCase {
     public void testNullInput() throws IOException {
 
         assertEquals(null, (new ua_parser.pig.device.Family()).exec(null));
+        assertEquals(null, (new ua_parser.pig.platform.Family()).exec(null));
 
         assertEquals(null, (new ua_parser.pig.os.Family()).exec(null));
         assertEquals(null, (new ua_parser.pig.os.Major()).exec(null));
