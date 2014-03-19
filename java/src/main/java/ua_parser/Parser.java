@@ -35,6 +35,7 @@ public class Parser {
   private UserAgentParser uaParser;
   private OSParser osParser;
   private DeviceParser deviceParser;
+  private PlatformParser platformParser;
 
   public Parser() throws IOException {
     this(Parser.class.getResourceAsStream(REGEX_YAML_PATH));
@@ -48,7 +49,8 @@ public class Parser {
     UserAgent ua = parseUserAgent(agentString);
     OS os = parseOS(agentString);
     Device device = deviceParser.parse(agentString);
-    return new Client(ua, os, device);
+    Platform platform = platformParser.parse(agentString);
+    return new Client(ua, os, device, platform);
   }
 
   public UserAgent parseUserAgent(String agentString) {
@@ -57,6 +59,10 @@ public class Parser {
 
   public Device parseDevice(String agentString) {
     return deviceParser.parse(agentString);
+  }
+
+  public Platform parsePlatform(String agentString) {
+    return platformParser.parse(agentString);
   }
 
   public OS parseOS(String agentString) {
@@ -85,5 +91,11 @@ public class Parser {
       throw new IllegalArgumentException("device_parsers is missing from yaml");
     }
     deviceParser = DeviceParser.fromList(deviceParserConfigs);
+
+    List<Map<String,String>> platformParserConfigs = regexConfig.get("platform_parsers");
+    if (platformParserConfigs == null) {
+      throw new IllegalArgumentException("platform_parsers is missing from yaml");
+    }
+    platformParser = PlatformParser.fromList(platformParserConfigs);
   }
 }

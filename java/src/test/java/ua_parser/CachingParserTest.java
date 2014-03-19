@@ -57,6 +57,13 @@ public class CachingParserTest extends ParserTest {
   }
 
   @Test
+  public void testCachedParsePlatform() {
+    super.testParsePlatform();
+    super.testParsePlatform();
+    super.testParsePlatform();
+  }
+
+  @Test
   public void testCachedParseFirefox() {
     super.testParseFirefox();
     super.testParseFirefox();

@@ -33,6 +33,7 @@ public class CachingParser extends Parser {
   private Map<String, Client>    cacheClient    = null;
   private Map<String, UserAgent> cacheUserAgent = null;
   private Map<String, Device>    cacheDevice    = null;
+  private Map<String, Platform>    cachePlatform  = null;
   private Map<String, OS>        cacheOS        = null;
 
   // ------------------------------------------
@@ -103,6 +104,26 @@ public class CachingParser extends Parser {
     device = super.parseDevice(agentString);
     cacheDevice.put(agentString, device);
     return device;
+  }
+
+  // ------------------------------------------
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Platform parsePlatform(String agentString) {
+    if (agentString == null) {
+      return null;
+    }
+    if (cachePlatform == null) {
+    	cachePlatform = new LRUMap(CACHE_SIZE);
+    }
+    Platform platform = cachePlatform.get(agentString);
+    if (platform != null) {
+      return platform;
+    }
+    platform = super.parsePlatform(agentString);
+    cachePlatform.put(agentString, platform);
+    return platform;
   }
 
   // ------------------------------------------

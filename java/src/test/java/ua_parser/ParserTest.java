@@ -65,6 +65,11 @@ public class ParserTest {
   }
 
   @Test
+  public void testParsePlatform() {
+    testPlatformFromYaml("test_platform.yaml");
+  }
+
+  @Test
   public void testParseFirefox() {
     testUserAgentFromYaml("firefox_user_agent_strings.yaml");
   }
@@ -81,10 +86,10 @@ public class ParserTest {
 
     Client expected1 = new Client(new UserAgent("Firefox", "3", "5", "5"),
                                   new OS("Mac OS X", "10", "4", null, null),
-                                  new Device("Other"));
+                                  new Device("Other"), new Platform("Desktop"));
     Client expected2 = new Client(new UserAgent("Mobile Safari", "5", "1", null),
                                   new OS("iOS", "5", "1", "1", null),
-                                  new Device("iPhone"));
+                                  new Device("iPhone"), new Platform("Mobile"));
 
     assertThat(parser.parse(agentString1), is(expected1));
     assertThat(parser.parse(agentString2), is(expected2));
@@ -100,13 +105,17 @@ public class ParserTest {
                       + "    os_replacement: 'CatOS 9000'\n"
                       + "device_parsers:\n"
                       + "  - regex: 'CashPhone-([\\$0-9]+)\\.(\\d+)\\.(\\d+)'\n"
-                      + "    device_replacement: 'CashPhone $1'\n";
+                      + "    device_replacement: 'CashPhone $1'\n"
+					+ "platform_parsers:\n"
+					+ "  - regex: 'CashPhone-([\\$0-9]+)\\.(\\d+)\\.(\\d+)'\n"
+					+ "    device_category: 'Mobile'";
 
     Parser testParser = parserFromStringConfig(testConfig);
     Client result = testParser.parse("ABC12\\34 (CashPhone-$9.0.1 CatOS OH-HAI=/^.^\\=)");
     assertThat(result.userAgent.family, is("ABC (12\\34)"));
     assertThat(result.os.family, is("CatOS 9000"));
     assertThat(result.device.family, is("CashPhone $9"));
+    assertThat(result.platform.family, is("Mobile"));
   }
 
   @Test (expected=IllegalArgumentException.class)
@@ -144,6 +153,15 @@ public class ParserTest {
     List<Map> testCases = (List<Map>) ((Map)yaml.load(yamlStream)).get("test_cases");
     for(Map<String, Object> testCase : testCases) {
       assertThat(parser.parseDevice((String)testCase.get("user_agent_string")), is(Device.fromMap(testCase)));
+    }
+  }
+
+  void testPlatformFromYaml(String filename) {
+    InputStream yamlStream = this.getClass().getResourceAsStream(TEST_RESOURCE_PATH + filename);
+
+    List<Map> testCases = (List<Map>) ((Map)yaml.load(yamlStream)).get("test_cases");
+    for(Map<String, Object> testCase : testCases) {
+      assertThat((String)testCase.get("user_agent_string"), parser.parsePlatform((String)testCase.get("user_agent_string")), is(Platform.fromMap(testCase)));
     }
   }
 
